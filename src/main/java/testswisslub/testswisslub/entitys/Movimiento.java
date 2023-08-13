@@ -11,8 +11,7 @@ import java.util.List;
 public class Movimiento {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonManagedReference
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id",nullable = false)
     private Long id;
 

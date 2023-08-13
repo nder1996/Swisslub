@@ -35,6 +35,8 @@ public class MovimientoDetallesController {
         }
     }
 
+
+
     @GetMapping("/ById/{id}")
     public MovimientosDetalles findById(@PathVariable Long id){
         try {
@@ -52,6 +54,17 @@ public class MovimientoDetallesController {
             throw new RuntimeException(e);
         }
     }
+
+    @GetMapping("/ByMovimientoEstadoXDetalles/{estado}")
+    public List<MovimientosDetalles> findByMovimentoID(@PathVariable String estado){
+        try {
+            return movimientoDetallesServices.buscarMovimientoMovimientoXDetallesEstado(estado);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 
 
 }

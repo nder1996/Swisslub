@@ -3,14 +3,18 @@ package testswisslub.testswisslub.repository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Tuple;
+import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 import testswisslub.testswisslub.dto.MovimientoDTO;
 import testswisslub.testswisslub.entitys.Movimiento;
+import testswisslub.testswisslub.entitys.MovimientosDetalles;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Repository
@@ -44,7 +48,7 @@ public class MovimientoRepository {
     }
 
 
-    @Transactional
+    /*@Transactional
     public void updateMovimiento(Movimiento movimiento , Long id) throws IllegalStateException{
         try{
             if (entityManager != null) {
@@ -59,7 +63,7 @@ public class MovimientoRepository {
         }catch (IllegalStateException illegalStateException){
             throw new IllegalStateException("EntityManager is null. Make sure it's properly injected."+illegalStateException.getMessage());
         }
-    }
+    }*/
 
     @Transactional
     public Movimiento findByID(Long id) throws IllegalStateException{
@@ -111,7 +115,7 @@ public class MovimientoRepository {
     }
 
 
-    @Transactional
+    /*@Transactional
     public void deleteMovimiento(Long id) throws IllegalStateException{
         try{
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -132,7 +136,41 @@ public class MovimientoRepository {
         }catch (IllegalStateException illegalStateException){
             throw new IllegalStateException("EntityManager is null. Make sure it's properly injected."+illegalStateException.getMessage());
         }
+    }*/
+
+    @Transactional
+    public List<Object[]> findByEstadoMovimientoXDetalles(String estado) throws IllegalStateException{
+        TypedQuery<Object[]> query = null;
+        try {
+            if (entityManager != null) {
+                CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+                CriteriaQuery<Object[]> cq = cb.createQuery(Object[].class);
+                Root<MovimientosDetalles> movimientoDetallesRoot = cq.from(MovimientosDetalles.class);
+                Join<MovimientosDetalles, Movimiento> movimientoJoin = movimientoDetallesRoot.join("movimiento");
+                cq.where(cb.equal(movimientoJoin.get("estado"), estado));
+                cq.multiselect(
+                        movimientoJoin.get("id"),
+                        movimientoDetallesRoot.get("id"),
+                        movimientoJoin.get("bodega_origen_codigo"),
+                        movimientoJoin.get("id_empresa"),
+                        movimientoJoin.get("bodega_destino_codigo"),
+                        movimientoDetallesRoot.get("item_codigo")
+                );
+               query = entityManager.createQuery(cq);
+            }
+        }catch (IllegalStateException illegalStateException){
+            throw new IllegalStateException("EntityManager is null. Make sure it's properly injected."+illegalStateException.getMessage());
+        }
+        return query.getResultList();
     }
+
+
+
+
+
+
+
+
 
 
 

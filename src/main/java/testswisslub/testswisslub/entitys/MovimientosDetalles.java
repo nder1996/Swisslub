@@ -10,7 +10,7 @@ public class MovimientosDetalles {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id" , nullable = false)
     private Long id;
 
@@ -18,6 +18,9 @@ public class MovimientosDetalles {
     @ManyToOne
     @JoinColumn(name = "movimiento_id", referencedColumnName = "id", nullable = false)
     private Movimiento movimiento;
+
+
+
 
     @Column(name = "item_codigo", length = 20)
     private String item_codigo;
@@ -68,4 +71,5 @@ public class MovimientosDetalles {
     public void setCantidad_enviada(Long cantidad_enviada) {
         this.cantidad_enviada = cantidad_enviada;
     }
+
 }

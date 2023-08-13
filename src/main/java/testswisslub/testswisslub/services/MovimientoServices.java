@@ -12,7 +12,7 @@ import testswisslub.testswisslub.repository.MovimientoRepository_1;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Objects;
 
 
 @Service
@@ -62,7 +62,7 @@ public class MovimientoServices {
     }
 
 
-    public void actualizarMovimiento(MovimientoDTO movimientoDTO , Long id) throws Exception{
+   /* public void actualizarMovimiento(MovimientoDTO movimientoDTO , Long id) throws Exception{
         try {
             Movimiento movimiento1 = new Movimiento();
             movimiento1.setId(movimientoDTO.getId());
@@ -78,7 +78,7 @@ public class MovimientoServices {
             throw new IllegalStateException("Hubo un error al momento de Actualizar el moviimiento"+e.getMessage());
         }
 
-    }
+    }*/
 
     public void crearMovimiento(MovimientoDTO movimientoDTO) throws Exception{
         try {
@@ -99,12 +99,23 @@ public class MovimientoServices {
     }
 
 
-    public void eliminarById(Long id) throws Exception{
+    /*public void eliminarById(Long id) throws Exception{
         try {
             movimientoRepository.deleteMovimiento(id);
         }catch (Exception e){
             throw new IllegalStateException("Hubo un error al momento de buscar todos los movimientos"+e.getMessage());
         }
+    }*/
+
+
+    public List<Object[]> BuscarEstadoXMovimientoXMovimiento(String estado){
+        List<Object[]> movimientoObject =new ArrayList<>();
+        try {
+            movimientoObject = movimientoRepository.findByEstadoMovimientoXDetalles(estado);
+        }catch (Exception e){
+            throw new IllegalStateException("Hubo un error al momento de buscar el registro por id en la tabla movimientos"+e.getMessage());
+        }
+        return movimientoObject;
     }
 
 

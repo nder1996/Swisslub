@@ -54,6 +54,15 @@ public class MovimientoController {
         }
     }
 
+    @GetMapping("/ByEstadoMovimientoXDetalles/{estado}")
+    public List<Object[]> findByEstadoMovimienoXDetalles(@PathVariable String estado){
+        try {
+            return movimientoService.BuscarEstadoXMovimientoXMovimiento(estado);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 
 
