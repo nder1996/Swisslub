@@ -1,35 +1,32 @@
-package testswisslub.testswisslub.entitys;
+package testswisslub.testswisslub.dto;
 
 import jakarta.persistence.*;
+import testswisslub.testswisslub.entitys.Movimiento;
 
-import java.util.Date;
-
-@Entity
-@Table(name = "movimiento_detalle")
-public class MovimientosDetalles {
+public class MovimientoDetallesDTO {
 
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id" , nullable = false)
     private Long id;
 
 
-    @ManyToOne
-    @JoinColumn(name = "movimiento_id", referencedColumnName = "id", nullable = false)
+
+    private Long movimiento_id;
+
+
+
     private Movimiento movimiento;
 
-    @Column(name = "item_codigo", length = 20)
+
     private String item_codigo;
 
 
-    @Column(name="cantidad_enviada",nullable = false)
+
     private Long cantidad_enviada;
 
 
-    public MovimientosDetalles(){}
+    public MovimientoDetallesDTO(){}
 
-    public MovimientosDetalles(Long id,Movimiento movimiento,String item_codigo , Long cantidad_enviada){
+    public MovimientoDetallesDTO(Long id,Movimiento movimiento,String item_codigo , Long cantidad_enviada){
         this.id=id;
         this.movimiento=movimiento;
         this.item_codigo=item_codigo;
