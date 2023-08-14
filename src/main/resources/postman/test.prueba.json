@@ -1,0 +1,294 @@
+[
+    /*ENDPOINT BUSQUEDA ID EN LA TABLA MOVIMIENTO */
+
+    /* http://localhost:4000/movimientos/ById/1 */
+    {
+        "id": 1,
+        "id_empresa": 1001,
+        "descripcion": "movimiento 01",
+        "bodega_origen_codigo": "BOD-01",
+        "bodega_destino_codigo": "BOD-02",
+        "fecha_creacion": "2023-08-12",
+        "fecha_entrega": "2023-08-12",
+        "estado": "P"
+    },
+
+
+
+     /*ENDPOINT BUSQUEDA ESTADO EN LA TABLA MOVIMIENTO */
+
+    /* http://localhost:4000/movimientos/ByEstado/P */ 
+     {
+        "id": 1,
+        "id_empresa": 1001,
+        "descripcion": "movimiento 01",
+        "bodega_origen_codigo": "BOD-01",
+        "bodega_destino_codigo": "BOD-02",
+        "fecha_creacion": "2023-08-12",
+        "fecha_entrega": "2023-08-12",
+        "estado": "P"
+    },
+    {
+        "id": 2,
+        "id_empresa": 1002,
+        "descripcion": "movimiento 02",
+        "bodega_origen_codigo": "BOD-03",
+        "bodega_destino_codigo": "BOD-04",
+        "fecha_creacion": "2023-08-10",
+        "fecha_entrega": "2023-08-11",
+        "estado": "P"
+    },
+    {
+        "id": 5,
+        "id_empresa": 1001,
+        "descripcion": "movimiento 05",
+        "bodega_origen_codigo": "BOD-02",
+        "bodega_destino_codigo": "BOD-03",
+        "fecha_creacion": "2023-07-10",
+        "fecha_entrega": "2023-07-10",
+        "estado": "P"
+    },
+    {
+        "id": 8,
+        "id_empresa": 1001,
+        "descripcion": "Movimiento de prueba 8",
+        "bodega_origen_codigo": "BOD01",
+        "bodega_destino_codigo": "BOD04",
+        "fecha_creacion": "2023-08-12",
+        "fecha_entrega": "2023-08-19",
+        "estado": "P"
+    },
+
+    /*movimiento detalle debe incluir los endpoints para búsqueda por id*/
+
+    /* http://localhost:4000/movimientoDetalles/ById/1  */
+    {
+        "id": 1,
+        "movimiento": {
+            "id": 1,
+            "id_empresa": 1001,
+            "descripcion": "movimiento 01",
+            "bodega_origen_codigo": "BOD-01",
+            "bodega_destino_codigo": "BOD-02",
+            "fecha_creacion": "2023-08-12",
+            "fecha_entrega": "2023-08-12",
+            "estado": "P"
+        },
+        "item_codigo": "A001",
+        "cantidad_enviada": 5
+    },
+
+
+    /*endpoints para búsqueda por estado en la tabla movimientos detalles X tabla movimiento */
+    /* http://localhost:4000/movimientoDetalles/ByMovimientoEstadoXDetalles/E  */
+    {
+        "id": 11,
+        "movimiento": {
+            "id": 6,
+            "id_empresa": 1002,
+            "descripcion": "movimiento 06",
+            "bodega_origen_codigo": "BOD-03",
+            "bodega_destino_codigo": "BOD-01",
+            "fecha_creacion": "2023-07-15",
+            "fecha_entrega": "2023-07-17",
+            "estado": "E"
+        },
+        "item_codigo": "B002",
+        "cantidad_enviada": 2
+    },
+    {
+        "id": 12,
+        "movimiento": {
+            "id": 7,
+            "id_empresa": 1002,
+            "descripcion": "movimiento 7",
+            "bodega_origen_codigo": "BOD-02",
+            "bodega_destino_codigo": "BOD-04",
+            "fecha_creacion": "2023-01-15",
+            "fecha_entrega": "2023-01-17",
+            "estado": "E"
+        },
+        "item_codigo": "C002",
+        "cantidad_enviada": 7
+    },
+
+      /*endpoints para búsqueda por movimiento ID en la tabla movimiendoDetalle */
+
+
+    /* http://localhost:4000/movimientoDetalles/ByMovimientoID/1 */
+      {
+        "id": 1,
+        "movimiento": {
+            "id": 1,
+            "id_empresa": 1001,
+            "descripcion": "movimiento 01",
+            "bodega_origen_codigo": "BOD-01",
+            "bodega_destino_codigo": "BOD-02",
+            "fecha_creacion": "2023-08-12",
+            "fecha_entrega": "2023-08-12",
+            "estado": "P"
+        },
+        "item_codigo": "A001",
+        "cantidad_enviada": 5
+    },
+    {
+        "id": 2,
+        "movimiento": {
+            "id": 1,
+            "id_empresa": 1001,
+            "descripcion": "movimiento 01",
+            "bodega_origen_codigo": "BOD-01",
+            "bodega_destino_codigo": "BOD-02",
+            "fecha_creacion": "2023-08-12",
+            "fecha_entrega": "2023-08-12",
+            "estado": "P"
+        },
+        "item_codigo": "A002",
+        "cantidad_enviada": 8
+    },
+
+    /*Incluir un endpoint que te permita guardar un movimiento con una lista de detalles.*/
+    
+    /*METODO POST  http://localhost:4000/movimientos/crearMovimientoXDetalles */
+    {
+        "movimiento": {
+          "id": 9,
+          "id_empresa": 1002,
+          "descripcion": "Movimiento de prueba 9",
+          "bodega_origen_codigo": "BOD01",
+          "bodega_destino_codigo": "BOD04",
+          "fecha_creacion": "2023-08-13",
+          "fecha_entrega": "2023-08-20",
+          "estado": "P"
+        },
+        "detalles": [
+          {
+            "id": 17,
+            "movimiento_id": 9,
+            "item_codigo": "ITEM001",
+            "cantidad_enviada": 5
+          },
+          {
+            "id": 18,
+            "movimiento_id": 9,
+            "item_codigo": "ITEM002",
+            "cantidad_enviada": 10
+          },
+          {
+            "id": 19,
+            "movimiento_id": 9,
+            "item_codigo": "ITEM003",
+            "cantidad_enviada": 8
+          }
+        ]
+      },
+
+      /*Crear un endpoint que te permita obtener la siguiente estructura:
+        movimiento_id, movimiento_detalle_id, bodega_origen_codigo, empresa,
+        bodega_destino_codigo, item_id. Este enpoint debe tener un filtro por estado.*/
+
+        /* http://localhost:4000/movimientos/findEstadoMovimientoXDetalles/P */
+
+        [
+            [
+                1,
+                1,
+                "BOD-01",
+                1001,
+                "BOD-02",
+                "A001"
+            ],
+            [
+                1,
+                2,
+                "BOD-01",
+                1001,
+                "BOD-02",
+                "A002"
+            ],
+            [
+                2,
+                3,
+                "BOD-03",
+                1002,
+                "BOD-04",
+                "B002"
+            ],
+            [
+                2,
+                4,
+                "BOD-03",
+                1002,
+                "BOD-04",
+                "B002"
+            ],
+            [
+                5,
+                9,
+                "BOD-02",
+                1001,
+                "BOD-03",
+                "B002"
+            ],
+            [
+                5,
+                10,
+                "BOD-02",
+                1001,
+                "BOD-03",
+                "B002"
+            ],
+            [
+                8,
+                14,
+                "BOD01",
+                1001,
+                "BOD04",
+                null
+            ],
+            [
+                8,
+                15,
+                "BOD01",
+                1001,
+                "BOD04",
+                null
+            ],
+            [
+                8,
+                16,
+                "BOD01",
+                1001,
+                "BOD04",
+                null
+            ],
+            [
+                9,
+                17,
+                "BOD01",
+                1002,
+                "BOD04",
+                null
+            ],
+            [
+                9,
+                18,
+                "BOD01",
+                1002,
+                "BOD04",
+                null
+            ],
+            [
+                9,
+                19,
+                "BOD01",
+                1002,
+                "BOD04",
+                null
+            ]
+        ]
+
+
+]
+
+
