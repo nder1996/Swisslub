@@ -3,16 +3,16 @@ package testswisslub.testswisslub.services;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import testswisslub.testswisslub.dto.MovimientoDTO;
 import testswisslub.testswisslub.entitys.Movimiento;
+import testswisslub.testswisslub.entitys.MovimientosDetalles;
 import testswisslub.testswisslub.repository.MovimientoRepository;
-import testswisslub.testswisslub.repository.MovimientoRepository_1;
+import testswisslub.testswisslub.request.MovimientoRequest;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
 @Service
@@ -62,54 +62,10 @@ public class MovimientoServices {
     }
 
 
-   /* public void actualizarMovimiento(MovimientoDTO movimientoDTO , Long id) throws Exception{
-        try {
-            Movimiento movimiento1 = new Movimiento();
-            movimiento1.setId(movimientoDTO.getId());
-            movimiento1.setDescripcion(movimientoDTO.getDescripcion());
-            movimiento1.setEstado(movimientoDTO.getEstado());
-            movimiento1.setId_empresa(movimientoDTO.getId_empresa());
-            movimiento1.setBodega_destino_codigo(movimientoDTO.getBodega_destino_codigo());
-            movimiento1.setBodega_origen_codigo(movimientoDTO.getBodega_origen_codigo());
-            movimiento1.setFecha_creacion(movimientoDTO.getFecha_creacion());
-            movimiento1.setFecha_entrega(movimientoDTO.getFecha_creacion());
-            movimientoRepository.updateMovimiento(movimiento1,id);
-        }catch (Exception e){
-            throw new IllegalStateException("Hubo un error al momento de Actualizar el moviimiento"+e.getMessage());
-        }
-
-    }*/
-
-    public void crearMovimiento(MovimientoDTO movimientoDTO) throws Exception{
-        try {
-            Movimiento movimiento1 = new Movimiento();
-            movimiento1.setId(movimientoDTO.getId());
-            movimiento1.setDescripcion(movimientoDTO.getDescripcion());
-            movimiento1.setEstado(movimientoDTO.getEstado());
-            movimiento1.setId_empresa(movimientoDTO.getId_empresa());
-            movimiento1.setBodega_destino_codigo(movimientoDTO.getBodega_destino_codigo());
-            movimiento1.setBodega_origen_codigo(movimientoDTO.getBodega_origen_codigo());
-            movimiento1.setFecha_creacion(movimientoDTO.getFecha_creacion());
-            movimiento1.setFecha_entrega(movimientoDTO.getFecha_creacion());
-            entityManager.persist(movimiento1);
-            System.out.println("Registro insertado con éxito");
-        }catch (Exception e){
-            throw new IllegalStateException("Hubo un error al momento de crear nuevo registro en la tabla moviimiento"+e.getMessage());
-        }
-    }
 
 
-    /*public void eliminarById(Long id) throws Exception{
-        try {
-            movimientoRepository.deleteMovimiento(id);
-        }catch (Exception e){
-            throw new IllegalStateException("Hubo un error al momento de buscar todos los movimientos"+e.getMessage());
-        }
-    }*/
-
-
-    public List<Object[]> BuscarEstadoXMovimientoXMovimiento(String estado){
-        List<Object[]> movimientoObject =new ArrayList<>();
+    public List<Object> BuscarEstadoXMovimientoXMovimiento(String estado){
+        List<Object> movimientoObject =new ArrayList<>();
         try {
             movimientoObject = movimientoRepository.findByEstadoMovimientoXDetalles(estado);
         }catch (Exception e){
@@ -117,6 +73,37 @@ public class MovimientoServices {
         }
         return movimientoObject;
     }
+
+    @Transactional
+    public void guardarMovimientoXDetalles(MovimientoRequest request){
+        try {
+
+            Movimiento movimiento = new Movimiento();
+            List<MovimientosDetalles> movimientosDetalles = new ArrayList<>();
+            movimiento.setId(request.getMovimiento().getId());
+            movimiento.setEstado(request.getMovimiento().getEstado());
+            movimiento.setFecha_entrega(request.getMovimiento().getFecha_entrega());
+            movimiento.setFecha_creacion(request.getMovimiento().getFecha_creacion());
+            movimiento.setId_empresa(request.getMovimiento().getId_empresa());
+            movimiento.setDescripcion(request.getMovimiento().getDescripcion());
+            movimiento.setBodega_origen_codigo(request.getMovimiento().getBodega_origen_codigo());
+            movimiento.setBodega_destino_codigo(request.getMovimiento().getBodega_destino_codigo());
+            for (MovimientosDetalles detalle : request.getDetalles()) {
+                MovimientosDetalles nuevoDetalle = new MovimientosDetalles();
+                nuevoDetalle.setId(detalle.getId());
+                nuevoDetalle.setMovimiento(movimiento);
+                nuevoDetalle.setCantidad_enviada(detalle.getCantidad_enviada());
+                movimientosDetalles.add(nuevoDetalle);
+            }
+            System.out.println("movimiento : "+movimiento+" detalles : "+movimientosDetalles);
+            movimientoRepository.saveMovimientosXDetalles(movimiento,movimientosDetalles);
+        }catch (Exception e){
+            throw new IllegalStateException("Hubo un error al momento de guardar el movimiento con sus detalles"+e.getMessage());
+        }
+
+    }
+
+
 
 
 }

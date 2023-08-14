@@ -5,9 +5,12 @@ import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import testswisslub.testswisslub.dto.MovimientoDTO;
 import testswisslub.testswisslub.entitys.Movimiento;
+import testswisslub.testswisslub.entitys.MovimientosDetalles;
+import testswisslub.testswisslub.request.MovimientoRequest;
 import testswisslub.testswisslub.services.MovimientoServices;
 
 import java.util.ArrayList;
@@ -54,8 +57,8 @@ public class MovimientoController {
         }
     }
 
-    @GetMapping("/ByEstadoMovimientoXDetalles/{estado}")
-    public List<Object[]> findByEstadoMovimienoXDetalles(@PathVariable String estado){
+    @GetMapping("/findEstadoMovimientoXDetalles/{estado}")
+    public List<Object> findByEstadoMovimienoXDetalles(@PathVariable String estado){
         try {
             return movimientoService.BuscarEstadoXMovimientoXMovimiento(estado);
         } catch (Exception e) {
@@ -64,35 +67,18 @@ public class MovimientoController {
     }
 
 
-
-
-
-/*
-    @PostMapping
-    public void crearMovimientoDetalles(@RequestBody MovimientoDTO movimiento) {
+    @PostMapping("/crearMovimientoXDetalles")
+    public ResponseEntity<String> crearMovimientoXDetalles(@RequestBody MovimientoRequest request) {
         try {
-            movimientoService.crearMovimiento(movimiento);
+            movimientoService.guardarMovimientoXDetalles(request);
+            return ResponseEntity.ok("Movimiento y detalles guardados exitosamente.");
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al guardar el movimiento y detalles: " + e.getMessage());
         }
     }
 
-    /*@PutMapping("/{id}")
-    public void actualizarMovimientoDetalles(@PathVariable Long id, @RequestBody MovimientoDTO movimiento) {
-        try {
-            movimientoService.actualizarMovimiento(movimiento,id);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 
-    @DeleteMapping("/{id}")
-    public void borrarMovimientoDetalles(@PathVariable Long id) {
-        try {
-            movimientoService.eliminarById(id);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }*/
+
 
 }

@@ -7,8 +7,9 @@ import jakarta.persistence.Tuple;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import testswisslub.testswisslub.dto.MovimientoDTO;
 import testswisslub.testswisslub.entitys.Movimiento;
 import testswisslub.testswisslub.entitys.MovimientosDetalles;
 
@@ -23,6 +24,8 @@ public class MovimientoRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
+    @Autowired
+    MovimientoRepository_JPA  movimientoQueryRepositoryJPA;
 
 
 
@@ -46,24 +49,6 @@ public class MovimientoRepository {
         System.out.println("valor movimientos : "+movimientos);
         return movimientos;
     }
-
-
-    /*@Transactional
-    public void updateMovimiento(Movimiento movimiento , Long id) throws IllegalStateException{
-        try{
-            if (entityManager != null) {
-                CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-                CriteriaUpdate<Movimiento> criteriaUpdate = criteriaBuilder.createCriteriaUpdate(Movimiento.class);
-                Root<Movimiento> root = criteriaUpdate.from(Movimiento.class);
-                criteriaUpdate.set(root, movimiento)
-                        .where(criteriaBuilder.equal(root.get("id"), id));
-                int updatedCount = entityManager.createQuery(criteriaUpdate).executeUpdate();
-                System.out.println("Registros actualizados: " + updatedCount);
-            }
-        }catch (IllegalStateException illegalStateException){
-            throw new IllegalStateException("EntityManager is null. Make sure it's properly injected."+illegalStateException.getMessage());
-        }
-    }*/
 
     @Transactional
     public Movimiento findByID(Long id) throws IllegalStateException{
@@ -115,36 +100,13 @@ public class MovimientoRepository {
     }
 
 
-    /*@Transactional
-    public void deleteMovimiento(Long id) throws IllegalStateException{
-        try{
-            CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-            CriteriaDelete<Movimiento> criteriaDelete = criteriaBuilder.createCriteriaDelete(Movimiento.class);
-            Root<Movimiento> root = criteriaDelete.from(Movimiento.class);
-            criteriaDelete.where(criteriaBuilder.equal(root.get("id"), id));
-            int deletedCount = entityManager.createQuery(criteriaDelete).executeUpdate();
-            System.out.println("Registros eliminados: " + deletedCount);
-        }catch (IllegalStateException illegalStateException){
-            throw new IllegalStateException("EntityManager is null. Make sure it's properly injected."+illegalStateException.getMessage());
-        }
-    }
-
     @Transactional
-    public void crearNuevoMovimiento(Movimiento nuevoMovimiento) throws IllegalStateException{
-        try {
-
-        }catch (IllegalStateException illegalStateException){
-            throw new IllegalStateException("EntityManager is null. Make sure it's properly injected."+illegalStateException.getMessage());
-        }
-    }*/
-
-    @Transactional
-    public List<Object[]> findByEstadoMovimientoXDetalles(String estado) throws IllegalStateException{
-        TypedQuery<Object[]> query = null;
+    public List<Object> findByEstadoMovimientoXDetalles(String estado) throws IllegalStateException{
+        TypedQuery<Object> query = null;
         try {
             if (entityManager != null) {
                 CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-                CriteriaQuery<Object[]> cq = cb.createQuery(Object[].class);
+                CriteriaQuery<Object> cq = cb.createQuery(Object.class);
                 Root<MovimientosDetalles> movimientoDetallesRoot = cq.from(MovimientosDetalles.class);
                 Join<MovimientosDetalles, Movimiento> movimientoJoin = movimientoDetallesRoot.join("movimiento");
                 cq.where(cb.equal(movimientoJoin.get("estado"), estado));
@@ -166,7 +128,54 @@ public class MovimientoRepository {
 
 
 
+    @Transactional
+    public void saveMovimientosXDetalles(Movimiento movimiento, List<MovimientosDetalles> detalles) {
+        try {
+            movimientoQueryRepositoryJPA.guardarMovimiento( movimiento.getId(),  movimiento.getId_empresa(), movimiento.getDescripcion(),
+                    movimiento.getBodega_origen_codigo(),  movimiento.getBodega_destino_codigo(), movimiento.getFecha_creacion(), movimiento.getFecha_entrega(),
+                    movimiento.getEstado());
+            for (MovimientosDetalles detalle : detalles) {
+                detalle.setMovimiento(movimiento); // Establecer la relación con el encabezado
+                movimientoQueryRepositoryJPA.guardarDetalle(detalle.getId(), movimiento.getId(),  detalle.getItem_codigo(),  detalle.getCantidad_enviada()); // Guardar cada detalle
+            }
+            System.out.println("entro a la cuestion del repository");
+        } catch (Exception e) {
+            throw new IllegalStateException("Error al guardar el encabezado y detalles: " + e.getMessage(), e);
+        }
+    }
 
+
+
+
+    /*
+    @Transactional
+    public void saveMovimientosXDetalles(Movimiento movimiento, List<MovimientosDetalles> detalles) {
+        try {
+            System.out.println("Repository dato Movimiento : " + movimiento + " datoDetalles : " + detalles);
+            entityManager.persist(movimiento);
+            for (MovimientosDetalles detalle : detalles) {
+                detalle.setMovimiento(movimiento);
+                entityManager.persist(detalle);
+            }
+        } catch (Exception e) {
+            throw new IllegalStateException("Error al guardar el movimiento y detalles: " + e.getMessage(), e);
+        }
+    }
+
+
+    /*@Transactional
+    public void saveMovimientosXDetalles(Movimiento movimiento, List<MovimientosDetalles> detalles) throws IllegalStateException{
+        try {
+            System.out.println("Repository dato Movimiento : "+movimiento+" datoDetalles : "+detalles);
+            entityManager.persist(movimiento);
+            for (MovimientosDetalles detalle : detalles) {
+                detalle.setMovimiento(movimiento);
+                entityManager.persist(detalle);
+            }
+        }catch (IllegalStateException illegalStateException){
+            throw new IllegalStateException("EntityManager is null. Make sure it's properly injected."+illegalStateException.getMessage());
+        }
+    }*/
 
 
 

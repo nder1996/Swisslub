@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import testswisslub.testswisslub.entitys.MovimientosDetalles;
 
 @Repository
-public interface MovimientoDetallesRepository_1 extends JpaRepository<MovimientosDetalles, Long> {
+public interface MovimientoDetallesRepository_JPA extends JpaRepository<MovimientosDetalles, Long> {
 
 
 }
