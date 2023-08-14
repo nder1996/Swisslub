@@ -1,10 +1,9 @@
 package testswisslub.testswisslub.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import testswisslub.testswisslub.entitys.Movimiento;
 import testswisslub.testswisslub.entitys.MovimientosDetalles;
 import testswisslub.testswisslub.services.MovimientoDetallesServices;
@@ -65,6 +64,41 @@ public class MovimientoDetallesController {
     }
 
 
+
+    @PostMapping("/crearMovimientoDetalle")
+    public ResponseEntity<String> crearMovimientoDetalle(@RequestBody MovimientosDetalles detalles) {
+        try {
+            System.out.println("Info Detalles id : "+detalles.getId());
+            //System.out.println("Info Detalles movimiento_id : "+detalles.getMovimiento().getId());
+            System.out.println("Info Detalles  cantidad enviada : "+detalles.getCantidad_enviada());
+            System.out.println("Info Detalles  item codigo : "+detalles.getItem_codigo());
+
+            movimientoDetallesServices.crearNewMovimientoDetalles(detalles);
+            return ResponseEntity.ok("se guardo con exito el nuevo registro de la tabla movimiento detalles");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Hubo un error al momento de guardar el nuevo registro de la tabla movimiento detalles : " + e.getMessage());
+        }
+    }
+
+
+    @PutMapping("/actualizarMovimientoDetalle")
+    public ResponseEntity<String> updateMovimientoDetalle(@RequestBody MovimientosDetalles detalles) {
+        try {
+            movimientoDetallesServices.actualizarMovimientoDetalles(detalles);
+            return ResponseEntity.ok("el registro de la tabla movimiento detalles se actualizo con exito");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al actualizar el registro de la tabla movimiento detalles: " + e.getMessage());
+        }
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteMovimientoDetalles(@PathVariable Long id) {
+        movimientoDetallesServices.eliminarMovimientoDetalles(id);
+        return ResponseEntity.noContent().build();
+    }
 
 
 }

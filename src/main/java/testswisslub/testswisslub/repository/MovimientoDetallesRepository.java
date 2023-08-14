@@ -8,6 +8,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Root;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import testswisslub.testswisslub.entitys.Movimiento;
 import testswisslub.testswisslub.entitys.MovimientosDetalles;
@@ -21,6 +22,9 @@ public class MovimientoDetallesRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    @Autowired
+    private MovimientoDetallesRepository_JPA movimientoDetallesRepositoryJpa;
 
 
 
@@ -148,5 +152,34 @@ public class MovimientoDetallesRepository {
 
         }
         return movimiento_detalle;
+    }
+
+
+    @Transactional
+    public void updateMovimientoDetalles(MovimientosDetalles detalle) {
+        try {
+            movimientoDetallesRepositoryJpa.actualizarDetalle(detalle.getId(), detalle.getMovimiento().getId(),  detalle.getItem_codigo(),  detalle.getCantidad_enviada()); // Guardar cada detalle
+        }catch (Exception  e){
+            throw new IllegalStateException("Hubo un error al momento de atualizar los datos en la tabla movimiento detalles " + e.getMessage(), e);
+        }
+    }
+
+
+    @Transactional
+    public void deleteMovimientoDetalles(Long id) {
+        try {
+            movimientoDetallesRepositoryJpa.eliminarDetalle(id);
+        }catch (Exception  e){
+            throw new IllegalStateException("Hubo un error al momento de borrar el id en la tabla movimientos detalles " + e.getMessage(), e);
+        }
+    }
+
+    @Transactional
+    public void createMovimiento(MovimientosDetalles detalle){
+        try {
+            movimientoDetallesRepositoryJpa.guardarDetalle(detalle.getId(), detalle.getMovimiento().getId(),  detalle.getItem_codigo(),  detalle.getCantidad_enviada());
+        }catch (Exception  e){
+            throw new IllegalStateException("Hubo un error al momento de borrar el id en la tabla movimientos " + e.getMessage(), e);
+        }
     }
 }

@@ -78,6 +78,37 @@ public class MovimientoController {
         }
     }
 
+    @PostMapping("/crearMovimiento")
+    public ResponseEntity<String> crearMovimiento(@RequestBody Movimiento movimiento) {
+        try {
+            movimientoService.crearNewMovimiento(movimiento);
+            return ResponseEntity.ok("Movimiento guardados exitosamente.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al guardar el movimiento y detalles: " + e.getMessage());
+        }
+    }
+
+
+    @PutMapping("/actualizarMovimiento")
+    public ResponseEntity<String> updateMovimiento(@RequestBody Movimiento movimiento) {
+        try {
+            movimientoService.actualizarMovimiento(movimiento);
+            return ResponseEntity.ok("Movimiento actualizado exitosamente.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al actualizar el registro: " + e.getMessage());
+        }
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteMovimiento(@PathVariable Long id) {
+        movimientoService.eliminarMovimiento(id);
+        return ResponseEntity.noContent().build();
+    }
+
+
 
 
 

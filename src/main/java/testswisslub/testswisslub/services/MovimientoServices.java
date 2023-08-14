@@ -34,7 +34,7 @@ public class MovimientoServices {
         try {
             movimientos = movimientoRepository.getAllMovimiento();
         }catch (Exception e){
-            throw new RuntimeException("Hubo un error al momento de buscar todos los movimientos"+e.getMessage());
+            throw new RuntimeException("Hubo un error al momento de buscar todos los registros en la tabla movimientos"+e.getMessage());
         }
         return movimientos;
     }
@@ -45,7 +45,7 @@ public class MovimientoServices {
         try {
             movimiento = movimientoRepository.findByID(id);
         }catch (Exception e){
-            throw new IllegalStateException("Hubo un error al momento de buscar el registro por id en la tabla movimientos"+e.getMessage());
+            throw new IllegalStateException("Hubo un error al momento de buscar el registro por id en la tabla movimiento"+e.getMessage());
         }
         return movimiento;
     }
@@ -56,7 +56,7 @@ public class MovimientoServices {
         try {
             movimiento = movimientoRepository.findByEstado(estado);
         }catch (Exception e){
-            throw new IllegalStateException("Hubo un error al momento de buscar el registro por id en la tabla movimientos"+e.getMessage());
+            throw new IllegalStateException("Hubo un error al momento de buscar el registro por estado en la tabla movimiento : "+e.getMessage());
         }
         return movimiento;
     }
@@ -69,7 +69,7 @@ public class MovimientoServices {
         try {
             movimientoObject = movimientoRepository.findByEstadoMovimientoXDetalles(estado);
         }catch (Exception e){
-            throw new IllegalStateException("Hubo un error al momento de buscar el registro por id en la tabla movimientos"+e.getMessage());
+            throw new IllegalStateException("Hubo un error al momento de buscar el registros relacionados por estado en la tablas movimiento y movimiento detalle  : "+e.getMessage());
         }
         return movimientoObject;
     }
@@ -95,15 +95,35 @@ public class MovimientoServices {
                 nuevoDetalle.setCantidad_enviada(detalle.getCantidad_enviada());
                 movimientosDetalles.add(nuevoDetalle);
             }
-            System.out.println("movimiento : "+movimiento+" detalles : "+movimientosDetalles);
             movimientoRepository.saveMovimientosXDetalles(movimiento,movimientosDetalles);
         }catch (Exception e){
-            throw new IllegalStateException("Hubo un error al momento de guardar el movimiento con sus detalles"+e.getMessage());
+            throw new IllegalStateException("Hubo un error al momento de guardar el movimiento con sus detalles : "+e.getMessage());
         }
+    }
 
+    public void crearNewMovimiento(Movimiento movimiento){
+        try {
+            movimientoRepository.createMovimiento(movimiento);
+        }catch (Exception e){
+            throw new IllegalStateException("Hubo un error al momento crear el nuevo registro en la tabla movimiento : "+e.getMessage());
+        }
     }
 
 
+    public void actualizarMovimiento(Movimiento movimiento){
+        try {
+            movimientoRepository.updateMovimiento(movimiento);
+        }catch (Exception e){
+            throw new IllegalStateException("Hubo un error al momento de actualizar el nuevo registro en la tabla movimiento : "+e.getMessage());
+        }
+    }
 
+    public void eliminarMovimiento(Long id){
+        try {
+            movimientoRepository.deleteMovimiento(id);
+        }catch (Exception e){
+            throw new IllegalStateException("Hubo un error al momento de actualizar el nuevo registro en la tabla movimiento : "+e.getMessage());
+        }
+    }
 
 }

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import testswisslub.testswisslub.entitys.Movimiento;
 import testswisslub.testswisslub.entitys.MovimientosDetalles;
 import testswisslub.testswisslub.repository.MovimientoDetallesRepository;
+import testswisslub.testswisslub.repository.MovimientoDetallesRepository_JPA;
 import testswisslub.testswisslub.repository.MovimientoRepository;
 
 import java.util.ArrayList;
@@ -17,6 +18,9 @@ public class MovimientoDetallesServices {
         MovimientoDetallesRepository movimientoDetallesRepository;
 
         MovimientosDetalles movimientosDetalles = new MovimientosDetalles();
+
+        @Autowired
+        MovimientoDetallesRepository_JPA movimientoDetallesRepositoryJpa;
 
 
     public List<MovimientosDetalles> findAll(){
@@ -61,6 +65,35 @@ public class MovimientoDetallesServices {
             throw new IllegalStateException("Hubo un error al momento de buscar el registro por estado en la tabla movimientos y movimientos detalles"+e.getMessage());
         }
         return movimientos_detalles;
+    }
+
+
+
+
+    public void crearNewMovimientoDetalles(MovimientosDetalles detalles){
+        try {
+            movimientoDetallesRepository.createMovimiento(detalles);
+        }catch (Exception e){
+            throw new IllegalStateException("Hubo un error al momento crear el nuevo registro en la tabla movimiento detalle : "+e.getMessage());
+        }
+    }
+
+
+    public void actualizarMovimientoDetalles(MovimientosDetalles detalles){
+        try {
+            movimientoDetallesRepository.updateMovimientoDetalles(detalles);
+        }catch (Exception e){
+            throw new IllegalStateException("Hubo un error al momento de actualizar el nuevo registro en la tabla movimiento detalles : "+e.getMessage());
+        }
+    }
+
+
+    public void eliminarMovimientoDetalles(Long id){
+        try {
+            movimientoDetallesRepository.deleteMovimientoDetalles(id);
+        }catch (Exception e){
+            throw new IllegalStateException("Hubo un error al momento de actualizar el nuevo registro en la tabla movimiento detalles : "+e.getMessage());
+        }
     }
 
 

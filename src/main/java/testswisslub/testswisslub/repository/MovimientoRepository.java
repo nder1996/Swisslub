@@ -27,6 +27,8 @@ public class MovimientoRepository {
     @Autowired
     MovimientoRepository_JPA  movimientoQueryRepositoryJPA;
 
+    MovimientoDetallesRepository_JPA movimientoDetallesRepositoryJpa;
+
 
 
 
@@ -44,7 +46,7 @@ public class MovimientoRepository {
                 movimientos = entityManager.createQuery(criteriaQuery).getResultList();
            }
         }catch (IllegalStateException illegalStateException){
-           throw new IllegalStateException("EntityManager is null. Make sure it's properly injected.");
+           throw new IllegalStateException("Hubo un error al momento de llamar todos los datos de la tabla movimiento : "+illegalStateException.getMessage());
         }
         System.out.println("valor movimientos : "+movimientos);
         return movimientos;
@@ -68,7 +70,7 @@ public class MovimientoRepository {
                 }
             }
         }catch (IllegalStateException illegalStateException){
-            throw new IllegalStateException("EntityManager is null. Make sure it's properly injected."+illegalStateException.getMessage());
+            throw new IllegalStateException("Hubo un error al buscar el id del registro en la tabla movimiento : "+illegalStateException.getMessage());
 
         }
         return movimiento;
@@ -93,7 +95,7 @@ public class MovimientoRepository {
                 }
             }
         }catch (IllegalStateException illegalStateException){
-            throw new IllegalStateException("EntityManager is null. Make sure it's properly injected."+illegalStateException.getMessage());
+            throw new IllegalStateException("Hubo un error al momento de buscar por estado en los datos de la tabla movimiento"+illegalStateException.getMessage());
 
         }
         return movimiento;
@@ -121,7 +123,7 @@ public class MovimientoRepository {
                query = entityManager.createQuery(cq);
             }
         }catch (IllegalStateException illegalStateException){
-            throw new IllegalStateException("EntityManager is null. Make sure it's properly injected."+illegalStateException.getMessage());
+            throw new IllegalStateException("Hubo un error al momento de relacionar los datos de la tabla movimiento y movimientos detalles por el estado"+illegalStateException.getMessage());
         }
         return query.getResultList();
     }
@@ -135,52 +137,45 @@ public class MovimientoRepository {
                     movimiento.getBodega_origen_codigo(),  movimiento.getBodega_destino_codigo(), movimiento.getFecha_creacion(), movimiento.getFecha_entrega(),
                     movimiento.getEstado());
             for (MovimientosDetalles detalle : detalles) {
-                detalle.setMovimiento(movimiento); // Establecer la relación con el encabezado
-                movimientoQueryRepositoryJPA.guardarDetalle(detalle.getId(), movimiento.getId(),  detalle.getItem_codigo(),  detalle.getCantidad_enviada()); // Guardar cada detalle
+                detalle.setMovimiento(movimiento);
+                movimientoDetallesRepositoryJpa.guardarDetalle(detalle.getId(), movimiento.getId(),  detalle.getItem_codigo(),  detalle.getCantidad_enviada()); // Guardar cada detalle
             }
-            System.out.println("entro a la cuestion del repository");
         } catch (Exception e) {
             throw new IllegalStateException("Error al guardar el encabezado y detalles: " + e.getMessage(), e);
         }
     }
 
 
-
-
-    /*
     @Transactional
-    public void saveMovimientosXDetalles(Movimiento movimiento, List<MovimientosDetalles> detalles) {
-        try {
-            System.out.println("Repository dato Movimiento : " + movimiento + " datoDetalles : " + detalles);
-            entityManager.persist(movimiento);
-            for (MovimientosDetalles detalle : detalles) {
-                detalle.setMovimiento(movimiento);
-                entityManager.persist(detalle);
+    public void updateMovimiento(Movimiento movimiento) {
+            try {
+                movimientoQueryRepositoryJPA.actualizarMovimiento( movimiento.getId(),  movimiento.getId_empresa(), movimiento.getDescripcion(),
+                        movimiento.getBodega_origen_codigo(),  movimiento.getBodega_destino_codigo(), movimiento.getFecha_creacion(), movimiento.getFecha_entrega(),
+                        movimiento.getEstado());
+            }catch (Exception  e){
+                throw new IllegalStateException("Hubo un error al momento de atualizar los datos " + e.getMessage(), e);
             }
-        } catch (Exception e) {
-            throw new IllegalStateException("Error al guardar el movimiento y detalles: " + e.getMessage(), e);
-        }
     }
 
 
-    /*@Transactional
-    public void saveMovimientosXDetalles(Movimiento movimiento, List<MovimientosDetalles> detalles) throws IllegalStateException{
+    @Transactional
+    public void deleteMovimiento(Long id) {
         try {
-            System.out.println("Repository dato Movimiento : "+movimiento+" datoDetalles : "+detalles);
-            entityManager.persist(movimiento);
-            for (MovimientosDetalles detalle : detalles) {
-                detalle.setMovimiento(movimiento);
-                entityManager.persist(detalle);
-            }
-        }catch (IllegalStateException illegalStateException){
-            throw new IllegalStateException("EntityManager is null. Make sure it's properly injected."+illegalStateException.getMessage());
+            movimientoQueryRepositoryJPA.eliminarMovimiento(id);
+        }catch (Exception  e){
+            throw new IllegalStateException("Hubo un error al momento de borrar el id en la tabla movimientos " + e.getMessage(), e);
         }
-    }*/
+    }
 
-
-
-
-
-
+    @Transactional
+    public void createMovimiento(Movimiento movimiento){
+        try {
+            movimientoQueryRepositoryJPA.guardarMovimiento( movimiento.getId(),  movimiento.getId_empresa(), movimiento.getDescripcion(),
+                    movimiento.getBodega_origen_codigo(),  movimiento.getBodega_destino_codigo(), movimiento.getFecha_creacion(), movimiento.getFecha_entrega(),
+                    movimiento.getEstado());
+        }catch (Exception  e){
+            throw new IllegalStateException("Hubo un error al momento de borrar el id en la tabla movimientos " + e.getMessage(), e);
+        }
+    }
 
 }

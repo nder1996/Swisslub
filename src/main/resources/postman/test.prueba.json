@@ -286,8 +286,102 @@
                 "BOD04",
                 null
             ]
-        ]
+        ],
+        /*PRUEBAS DE LOS ENPOINT DEL CRUD - MOVIMIENTO - CREAR NUEVO REGISTRO*/
 
+        /*http://localhost:4000/movimientos/crearMovimiento*/
+
+        {
+            "id": 10,
+            "id_empresa": 1002,
+            "descripcion": "Movimiento de prueba 9",
+            "bodega_origen_codigo": "BOD01",
+            "bodega_destino_codigo": "BOD04",
+            "fecha_creacion": "2023-08-13",
+            "fecha_entrega": "2023-08-20",
+            "estado": "P"
+        },
+        
+        /*PRUEBAS DE LOS ENPOINT DEL CRUD - MOVIMIENTO - ACTUALIZAR NUEVO REGISTRO*/
+
+        /* http://localhost:4000/movimientos/actualizarMovimiento */
+        {
+            "id": 10,
+            "id_empresa": 1002,
+            "descripcion": "Movimiento de prueba ACTUALIZADO",
+            "bodega_origen_codigo": "BOD01",
+            "bodega_destino_codigo": "BOD04",
+            "fecha_creacion": "2023-08-13",
+            "fecha_entrega": "2023-08-20",
+            "estado": "E"
+        },
+
+        /*PRUEBAS DE LOS ENPOINT DEL CRUD - MOVIMIENTO - ELIMINAR NUEVO REGISTRO*/
+
+        /*SE PROCEDE A CREAR UN MOVIMIENTO QUE NO TIENE DETALLES*/
+
+        /* http://localhost:4000/movimientos/crearMovimiento */
+
+        {
+            "id": 11,
+            "id_empresa": 1002,
+            "descripcion": "Movimiento de prueba REGISTRO PARA ELIMINAR",
+            "bodega_origen_codigo": "BOD01",
+            "bodega_destino_codigo": "BOD04",
+            "fecha_creacion": "2023-08-13",
+            "fecha_entrega": "2023-08-20",
+            "estado": "P"
+        },
+
+        /*SE PROCEDE A ELIMINAR EL REGISTRO RECIEN CREADO*/
+
+        /* http://localhost:4000/movimientos/11 */
+
+
+         /*PRUEBAS DE LOS ENPOINT DEL CRUD - MOVIMIENTO DETALLES- CREAR NUEVO REGISTRO*/
+
+         /*http://localhost:4000/movimientoDetalles/crearMovimientoDetalle*/
+
+         {
+            "id": 20,
+            "movimiento": {
+                "id": 1,
+                "id_empresa": 1001,
+                "descripcion": "movimiento 01",
+                "bodega_origen_codigo": "BOD-01",
+                "bodega_destino_codigo": "BOD-02",
+                "fecha_creacion": "2023-08-12",
+                "fecha_entrega": "2023-08-12",
+                "estado": "P"
+            },
+            "item_codigo": "A002",
+            "cantidad_enviada": 10
+        },
+
+        /*endpoint Actualizar el registro en la tabla movimiento detalles*/
+
+        /*http://localhost:4000/movimientoDetalles/actualizarMovimientoDetalle*/
+        {
+            "id": 1,
+            "movimiento": {
+                "id": 1,
+                "id_empresa": 1001,
+                "descripcion": "movimiento 01",
+                "bodega_origen_codigo": "BOD-01",
+                "bodega_destino_codigo": "BOD-02",
+                "fecha_creacion": "2023-08-12",
+                "fecha_entrega": "2023-08-12",
+                "estado": "P"
+            },
+            "item_codigo": "A002",
+            "cantidad_enviada": 0
+    }
+
+
+
+        /*CON ESTA PETICION SE ELIMINO EL REGISTRO CON EL ID 19 EN LA TABLA MOVIMIENTO POR DETALLES*/
+
+        /* http://localhost:4000/movimientoDetalles/19 */
 
 ]
 
