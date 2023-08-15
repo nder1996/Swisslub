@@ -1,8 +1,7 @@
 package testswisslub.testswisslub.entitys;
 
-import jakarta.persistence.*;
 
-import java.util.Date;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "movimiento_detalle")
@@ -10,7 +9,7 @@ public class MovimientosDetalles {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id" , nullable = false)
     private Long id;
 

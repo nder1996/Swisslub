@@ -1,9 +1,7 @@
 package testswisslub.testswisslub.controllers;
 
 
-import jakarta.annotation.PostConstruct;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

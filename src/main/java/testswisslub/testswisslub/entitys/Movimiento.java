@@ -1,20 +1,16 @@
 package testswisslub.testswisslub.entitys;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.*;
 
+import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "movimiento")
 public class Movimiento {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id",nullable = false)
     private Long id;
-
 
     @Column(name="id_empresa",nullable = false)
     private Long id_empresa;
@@ -38,16 +34,10 @@ public class Movimiento {
 
     @Column(name = "estado", columnDefinition = "VARCHAR2(1) DEFAULT 'P'",length = 1)
     private String estado;
-
-   /* @OneToMany(mappedBy = "movimiento", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<MovimientosDetalles> movimientoDetalles;*/
-
-
-    public Movimiento(){}
+    public  Movimiento(){}
 
     public Movimiento(Long id,Long id_empresa,String descripcion , String bodega_origen_codigo ,
-                            String bodega_destino_codigo , Date fecha_creacion , Date fecha_entrega , String estado){
+                      String bodega_destino_codigo , Date fecha_creacion , Date fecha_entrega , String estado){
         this.id=id;
         this.id_empresa=id_empresa;
         this.descripcion=descripcion;
@@ -122,12 +112,4 @@ public class Movimiento {
     public void setEstado(String estado) {
         this.estado = estado;
     }
-
-    /*public List<MovimientosDetalles> getMovimientoDetalles() {
-        return movimientoDetalles;
-    }
-
-    public void setMovimientoDetalles(List<MovimientosDetalles> movimientoDetalles) {
-        this.movimientoDetalles = movimientoDetalles;
-    }*/
 }

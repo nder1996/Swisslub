@@ -1,18 +1,21 @@
 package testswisslub.testswisslub.repository;
 
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Tuple;
-import jakarta.persistence.TypedQuery;
-import jakarta.persistence.criteria.*;
-import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import testswisslub.testswisslub.entitys.Movimiento;
 import testswisslub.testswisslub.entitys.MovimientosDetalles;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
